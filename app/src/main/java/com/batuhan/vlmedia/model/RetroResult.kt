@@ -9,4 +9,5 @@ data class RetroResult(
     val image : String,
     val url : String,
     val created : String,
+    val location: RetroLocation,
     )

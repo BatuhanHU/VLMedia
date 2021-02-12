@@ -2,6 +2,7 @@ package com.batuhan.vlmedia
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.batuhan.vlmedia.adapter.RecyclerListViewAdapter
@@ -46,6 +47,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun updateList(){
+        viewAdapter.notifyDataSetChanged()
+    }
+
     private fun getCharacters(page : Int){
         val service =
             RetrofitClientInstance.getRetrofitInstance().create(RequestService::class.java)
@@ -66,6 +71,9 @@ class MainActivity : AppCompatActivity() {
                     pageCount = response.body().info.pages
                     response.body().results
                     characterList.addAll(response.body().results)
+                    updateList()
+                } else {
+                    Log.e("MAIN", "What")
                 }
             }
 
@@ -74,7 +82,7 @@ class MainActivity : AppCompatActivity() {
              * exception occurred creating the request or processing the response.
              */
             override fun onFailure(call: Call<RetroCharacterListResponse>?, t: Throwable?) {
-                TODO("Not yet implemented")
+                Log.e("MAIN", t!!.stackTraceToString())
             }
 
         })
